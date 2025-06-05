@@ -57,7 +57,7 @@ python distill_time_embed.py \
 
 ### ComfyUI
 
-In ComfyUI, this is one way to use the node:
+In ComfyUI, this is one way to use the `Distill Time Embed` node:
 
 ![ComfyUI workflow illustrating how to use Time Embed Fix](/media/comfyui.png)
 

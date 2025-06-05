@@ -23,7 +23,7 @@ Make sure the verison of comfy-mecha is at least 1.2.36. Completely restart Comf
 
 ## How to use
 
-CLI arguments:
+CLI arguments to `distill_time_embed.py`:
 
 - `--models`: Two or more .safetensors checkpoints that will be used as reference to fix the time_embed keys.
 - `--fallback_model`: The .safetensors checkpoint to fix.

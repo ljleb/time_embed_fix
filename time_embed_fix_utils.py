@@ -17,7 +17,7 @@ TIME_EMBED_KEYS = {
 @merge_method
 def distill_time_embed(
     *models: Parameter(StateDict[Tensor], "weight", model_config),
-    iters: Parameter(int) = 8192,
+    iters: Parameter(int) = 4096,
     max_timestep: Parameter(int) = 2048,
     **kwargs,
 ) -> Return(Tensor, "weight", model_config):

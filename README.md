@@ -23,6 +23,8 @@ The node is called `Distill Time Embed`. Make sure the version of comfy-mecha is
 
 ## How to use
 
+### CLI
+
 CLI arguments to `distill_time_embed.py`:
 
 - `--models`: Two or more .safetensors checkpoints that will be used as reference to fix the time_embed keys.
@@ -52,6 +54,15 @@ python distill_time_embed.py \
     --out F:\sd\models\Stable-diffusion\functional_106_timestep_train_2048.safetensors \
     --device cuda:0 --dtype fp32 --iters 4096 --max_timestep 2048
 ```
+
+### ComfyUI
+
+In ComfyUI, this is one way to use the node:
+
+![ComfyUI workflow illustrating how to use Time Embed Fix](/media/comfyui.png)
+
+Using the `Fallback` node allows the method to be used as part of a larger merge workflow.  
+Alternatively, the `Fallback` node can be removed and the `fallback_model` input of the `Merger` node can be used instead.
 
 ## Honorable Mention
 

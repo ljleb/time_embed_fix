@@ -83,7 +83,6 @@ def main(paths, fallback_model, iters, max_timestep, device, dtype, out_path):
         iters=iters,
         max_timestep=max_timestep,
     )
-    recipe.set_cache()
     sd_mecha.merge(
         recipe,
         fallback_model=sd_mecha.model(fallback_model, config=model_config),

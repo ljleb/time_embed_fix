@@ -57,6 +57,10 @@ def distill_time_embed(
         return cache[key].to(device=device, dtype=dtype)
 
 
+distill_time_embed_create_recipe_original = distill_time_embed.create_recipe
+distill_time_embed.create_recipe = lambda *args, **kwargs: distill_time_embed_create_recipe_original(*args, **kwargs).set_cache()
+
+
 def get_timesteps(max_timestep, time_channels, device, dtype):
     timesteps = torch.arange(max_timestep+1, device=device, dtype=dtype)
     embeds = timestep_embedding(timesteps, time_channels)

@@ -21,7 +21,7 @@ def main_cli():
         nargs="+",
         metavar="PATH",
         required=True,
-        help="One or more .safetensors checkpoints to aggregate.",
+        help="Two or more .safetensors checkpoints that will be used as reference to fix the time_embed keys.",
     )
     parser.add_argument(
         "--fallback_model",
@@ -30,9 +30,15 @@ def main_cli():
         help="The .safetensors checkpoint to fix.",
     )
     parser.add_argument(
+        "--out",
+        required=True,
+        metavar="PATH",
+        help="Where to write the fixed model.",
+    )
+    parser.add_argument(
         "--device",
         default="cuda",
-        help='Torch device to run on (default: "cuda:0").',
+        help='Torch device to run on (default: "cuda").',
     )
     parser.add_argument(
         "--dtype",
@@ -57,12 +63,6 @@ def main_cli():
         type=int,
         default=2048,
         help="Maximum timestep to optimize (default: 2048)"
-    )
-    parser.add_argument(
-        "--out",
-        metavar="PATH",
-        default=None,
-        help="Where to write the trained embeddings (default = original hard‑coded path).",
     )
 
     args = parser.parse_args()

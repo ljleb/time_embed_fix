@@ -2,7 +2,7 @@ import argparse
 import pathlib
 import torch
 import sd_mecha
-from time_embed_fix_utils import distill_time_embed
+from time_embed_fix_utils import distill_time_embed, model_config
 
 
 def main_cli():
@@ -22,6 +22,12 @@ def main_cli():
         metavar="PATH",
         required=True,
         help="One or more .safetensors checkpoints to aggregate.",
+    )
+    parser.add_argument(
+        "--fallback_model",
+        metavar="PATH",
+        required=True,
+        help="The .safetensors checkpoint to fix.",
     )
     parser.add_argument(
         "--device",
@@ -62,6 +68,7 @@ def main_cli():
     args = parser.parse_args()
     main(
         paths=[str(pathlib.Path(p).absolute()) for p in args.models],
+        fallback_model=args.fallback_model,
         iters=args.iters,
         max_timestep=args.max_timestep,
         device=args.device,
@@ -70,14 +77,21 @@ def main_cli():
     )
 
 
-def main(paths, iters, max_timestep, device, dtype, out_path):
+def main(paths, fallback_model, iters, max_timestep, device, dtype, out_path):
     recipe = distill_time_embed(
-        *(sd_mecha.model(path) for path in paths),
+        *(sd_mecha.model(path, config=model_config) for path in paths),
         iters=iters,
         max_timestep=max_timestep,
     )
     recipe.set_cache()
-    sd_mecha.merge(recipe, merge_device=device, merge_dtype=dtype, threads=0, output=out_path)
+    sd_mecha.merge(
+        recipe,
+        fallback_model=sd_mecha.model(fallback_model, config=model_config),
+        merge_device=device,
+        merge_dtype=dtype,
+        threads=0,
+        output=out_path,
+    )
 
 
 if __name__ == "__main__":

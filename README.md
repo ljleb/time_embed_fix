@@ -43,7 +43,7 @@ For example, to fix a merge `my_amazing_merge.safetensors` of Animagine 4.0 Zero
 python distill_time_embed.py \
     --models animagine-xl-4.0-zero.safetensors noobaiXLNAIXL_epsilonPred11Version.safetensors \
     --fallback_model my_amazing_merge.safetensors \
-    --out F:\sd\models\Stable-diffusion\functional_106_timestep_train_2048.safetensors
+    --out my_amazing_merge_fixed.safetensors
 ```
 
 This is equivalent to:
@@ -52,7 +52,7 @@ This is equivalent to:
 python distill_time_embed.py \
     --models animagine-xl-4.0-zero.safetensors noobaiXLNAIXL_epsilonPred11Version.safetensors \
     --fallback_model my_amazing_merge.safetensors \
-    --out F:\sd\models\Stable-diffusion\functional_106_timestep_train_2048.safetensors \
+    --out my_amazing_merge_fixed.safetensors \
     --device cuda:0 --dtype fp32 --iters 4096 --max_timestep 2048
 ```
 

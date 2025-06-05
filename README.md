@@ -28,6 +28,7 @@ The node is called `Distill Time Embed`. Make sure the version of comfy-mecha is
 CLI arguments to `distill_time_embed.py`:
 
 - `--models`: Two or more .safetensors checkpoints that will be used as reference to fix the time_embed keys.
+Usually, these are base models. The merge to be fixed is typically NOT included in this list.
 - `--fallback_model`: The .safetensors checkpoint to fix.
 - `--out`: Where to write the fixed model.
 - `--device`: Torch device to run on (default: "cuda").

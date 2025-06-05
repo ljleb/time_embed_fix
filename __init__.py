@@ -1,1 +1,1 @@
-from time_embed_fix_utils import distill_time_embed
+from .time_embed_fix_utils import distill_time_embed

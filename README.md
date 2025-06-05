@@ -35,7 +35,7 @@ Usually, these are base models. The merge to be fixed is typically NOT included 
 - `--dtype`: Torch dtype to run on (default: float32).
 - `--iters`: Number of optimization steps (default: 4096).
 - `--lr`: Learning rate (default: 1e-4).
-- `--max_timestep`: Maximum timestep to optimize (default: 2048).
+- `--max_timestep`: Maximum timestep to optimize (default: 1000).
 
 For example, to fix a merge `my_amazing_merge.safetensors` of Animagine 4 Zero and NoobAI 1.1 Eps:
 
@@ -53,7 +53,7 @@ python distill_time_embed.py \
     --models animagine-xl-4.0-zero.safetensors noobaiXLNAIXL_epsilonPred11Version.safetensors \
     --fallback_model my_amazing_merge.safetensors \
     --out my_amazing_merge_fixed.safetensors \
-    --device cuda:0 --dtype fp32 --iters 4096 --max_timestep 2048
+    --device cuda:0 --dtype fp32 --iters 4096 --max_timestep 1000
 ```
 
 ### ComfyUI

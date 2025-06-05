@@ -1,0 +1,3 @@
+safetensors
+torch
+sd-mecha~=1.0.4

@@ -18,7 +18,7 @@ TIME_EMBED_KEYS = {
 def distill_time_embed(
     *models: Parameter(StateDict[Tensor], "weight", model_config),
     iters: Parameter(int) = 4096,
-    max_timestep: Parameter(int) = 2048,
+    max_timestep: Parameter(int) = 1000,
     **kwargs,
 ) -> Return(Tensor, "weight", model_config):
     if len(models) < 2:

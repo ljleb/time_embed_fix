@@ -61,8 +61,8 @@ def main_cli():
     parser.add_argument(
         "--max_timestep",
         type=int,
-        default=2048,
-        help="Maximum timestep to optimize (default: 2048)"
+        default=1000,
+        help="Maximum timestep to optimize (default: 1000)"
     )
 
     args = parser.parse_args()

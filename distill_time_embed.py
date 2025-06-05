@@ -77,7 +77,7 @@ def main(paths, iters, max_timestep, device, dtype, out_path):
         max_timestep=max_timestep,
     )
     recipe.set_cache()
-    sd_mecha.merge(recipe, merge_device=device, merge_dtype=dtype, output=out_path)
+    sd_mecha.merge(recipe, merge_device=device, merge_dtype=dtype, threads=0, output=out_path)
 
 
 if __name__ == "__main__":

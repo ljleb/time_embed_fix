@@ -37,7 +37,7 @@ Usually, these are base models. The merge to be fixed is typically NOT included 
 - `--lr`: Learning rate (default: 1e-4).
 - `--max_timestep`: Maximum timestep to optimize (default: 2048).
 
-For example, to fix a merge `my_amazing_merge.safetensors` of Animagine 4.0 Zero and NoobAI 1.1 EPS:
+For example, to fix a merge `my_amazing_merge.safetensors` of Animagine 4 Zero and NoobAI 1.1 Eps:
 
 ```
 python distill_time_embed.py \

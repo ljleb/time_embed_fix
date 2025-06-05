@@ -1,8 +1,10 @@
 import torch
 import math
+import threading
 from sd_mecha import merge_method, Parameter, StateDict, Return, StateDictKeyError
 from sd_mecha.extensions import model_configs
 from torch import Tensor
+from tqdm import trange
 
 
 model_config = model_configs.resolve("sdxl-sgm")
@@ -30,28 +32,29 @@ def distill_time_embed(
     if cache is None:
         raise RuntimeError("distill_time_embed must be executed with cache")
 
-    init_sd = {}
-    dummy_key = models[0][next(iter(TIME_EMBED_KEYS))]
-    device, dtype = dummy_key.device, dummy_key.dtype
+    with cache.setdefault("lock", threading.Lock()):
+        init_sd = {}
+        dummy_key = models[0][next(iter(TIME_EMBED_KEYS))]
+        device, dtype = dummy_key.device, dummy_key.dtype
 
-    if key in cache:
+        if key in cache:
+            return cache[key].to(device=device, dtype=dtype)
+
+        with torch.no_grad():
+            model = TimeEmbed(device=device, dtype=dtype)
+            timesteps = get_timesteps(max_timestep, model.time_channels, device, dtype)
+
+            for i, sd in enumerate(models, start=1):
+                update_model(init_sd, 1/i, sd, model, timesteps, device, dtype)
+
+            target = init_sd.pop("target")
+            model.load_state_dict(init_sd)
+
+            trained_sd = train(model, timesteps, target, iters)
+            for k, v in trained_sd.items():
+                cache[k] = v.cpu()
+
         return cache[key].to(device=device, dtype=dtype)
-
-    with torch.no_grad():
-        model = TimeEmbed(device=device, dtype=dtype)
-        timesteps = get_timesteps(max_timestep, model.time_channels, device, dtype)
-
-        for i, sd in enumerate(models, start=1):
-            update_model(init_sd, 1/i, sd, model, timesteps, device, dtype)
-
-        target = init_sd.pop("target")
-        model.load_state_dict(init_sd)
-
-        trained_sd = train(model, timesteps, target, iters)
-        for k, v in trained_sd.items():
-            cache[k] = v.cpu()
-
-    return cache[key].to(device=device, dtype=dtype)
 
 
 def get_timesteps(max_timestep, time_channels, device, dtype):
@@ -153,14 +156,15 @@ def train(model, timesteps, target, iters):
     model.train()
     optimizer = torch.optim.AdamW(model.parameters(), 1e-4)
 
-    iters_num_digits = math.floor(math.log10(iters)+1)
-    for i in range(iters):
+    progress_bar = trange(iters, desc="Training", unit="it")
+    for _ in progress_bar:
         emb_c = model(timesteps)
         loss = torch.nn.functional.mse_loss(emb_c, target, reduction="none")
         max_loss = loss.detach().abs().max()
         loss = loss.mean()
 
-        print(f"it {i+1:{iters_num_digits}}, loss: {loss.item():0.8f}, max_loss: {max_loss.item():0.8f}")
+        progress_bar.set_postfix_str(f"loss: {loss.item():0.8f}, max_loss: {max_loss.item():0.8f}")
+
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()

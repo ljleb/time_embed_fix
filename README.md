@@ -67,7 +67,7 @@ python -m distill_time_embed \
     --models animagine-xl-4.0-zero.safetensors noobaiXLNAIXL_epsilonPred11Version.safetensors \
     --fallback_model my_amazing_merge.safetensors \
     --out my_amazing_merge_fixed.safetensors \
-    --device cuda:0 --dtype fp32 --iters 4096 --max_timestep 1000
+    --device cuda:0 --dtype fp32 --iters 4096
 ```
 
 To weight animagine by 0.2 and noobai by 0.8:

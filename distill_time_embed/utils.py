@@ -262,6 +262,11 @@ def average_adm_to_1k(adm: torch.Tensor) -> torch.Tensor:
     “split‑then‑2‑part‑average” strategy the user described.
     """
     n, d = adm.shape
+    if n < 1000:
+        repeats = math.ceil(1000 / n)
+        duplicated = adm.repeat(repeats, 1)
+        return duplicated[:1000]
+
     if n == 1000:
         return adm
 

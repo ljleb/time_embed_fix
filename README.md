@@ -41,6 +41,16 @@ Usually, these are base models. The merge to be fixed is typically NOT included 
 - `--lr`: Learning rate (default: 1e-4).
 - `--max_timestep`: Maximum timestep to optimize (default: 1000).
 
+The prompt dataset needs to be formatted like this, one prompt per file (the exact name of the files does not matter, though the extension must be .txt):
+
+```
+dir_that_contains_prompts/
+- prompt1.txt
+- prompt2.txt
+- prompt3.txt
+- ...
+```
+
 For example, to fix a merge `my_amazing_merge.safetensors` of Animagine 4 Zero and NoobAI 1.1 Eps:
 
 ```sh

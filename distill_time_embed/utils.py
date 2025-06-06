@@ -8,7 +8,7 @@ from torch import Tensor
 from torch.utils.data import Dataset, DataLoader
 from tqdm import trange, tqdm
 from transformers import CLIPTokenizerFast
-from clip_g import create_tokenizer, create_text_model, TextTransformer
+from .clip_g import create_tokenizer, create_text_model, TextTransformer
 
 
 model_config = model_configs.resolve("sdxl-sgm")

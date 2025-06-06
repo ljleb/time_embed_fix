@@ -2,7 +2,7 @@ import argparse
 import pathlib
 import torch
 import sd_mecha
-from time_embed_fix_utils import distill_time_embed, model_config
+from .utils import distill_time_embed, model_config
 
 
 def main_cli():
@@ -40,6 +40,12 @@ def main_cli():
         nargs="+",
         type=float,
         help="The weights of the input models. Must be either empty or match the number of models.",
+    )
+    parser.add_argument(
+        "--discard_frozen",
+        nargs="?",
+        type=bool,
+        help="Discard all keys that are frozen. This also discards '.label_emb.' keys if --prompt_dataset is omitted.",
     )
     parser.add_argument(
         "--prompt_dataset",

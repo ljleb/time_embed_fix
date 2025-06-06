@@ -3,7 +3,7 @@ from functools import partial
 from typing import Optional
 import torch
 from torch import nn
-from clip_g.transformer import QuickGELU, LayerNormFp32, LayerNorm, TextTransformer
+from .transformer import QuickGELU, LayerNormFp32, LayerNorm, TextTransformer
 
 
 @dataclass

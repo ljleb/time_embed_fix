@@ -44,7 +44,7 @@ Usually, these are base models. The merge to be fixed is typically NOT included 
 For example, to fix a merge `my_amazing_merge.safetensors` of Animagine 4 Zero and NoobAI 1.1 Eps:
 
 ```sh
-python -m distill_time_embed.main \
+python -m distill_time_embed \
     --models animagine-xl-4.0-zero.safetensors noobaiXLNAIXL_epsilonPred11Version.safetensors \
     --fallback_model my_amazing_merge.safetensors \
     --out my_amazing_merge_fixed.safetensors
@@ -53,7 +53,7 @@ python -m distill_time_embed.main \
 This is equivalent to:
 
 ```sh
-python -m distill_time_embed.main \
+python -m distill_time_embed \
     --models animagine-xl-4.0-zero.safetensors noobaiXLNAIXL_epsilonPred11Version.safetensors \
     --fallback_model my_amazing_merge.safetensors \
     --out my_amazing_merge_fixed.safetensors \
@@ -63,7 +63,7 @@ python -m distill_time_embed.main \
 To weight animagine by 0.2 and noobai by 0.8:
 
 ```sh
-python -m distill_time_embed.main \
+python -m distill_time_embed \
     --models animagine-xl-4.0-zero.safetensors noobaiXLNAIXL_epsilonPred11Version.safetensors \
     --alphas 0.2 0.8 \
     --fallback_model my_amazing_merge.safetensors \

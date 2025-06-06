@@ -1,3 +1,4 @@
+import gc
 import pathlib
 import torch
 import math
@@ -83,11 +84,13 @@ def distill_time_embed(
                 prompt_dataset_generator.manual_seed(prompt_dataset_shuffle_seed)
 
             update_init_and_target(
-                init_sd, alphas[i] / alphas_cumsum[i],
+                init_sd, (alphas[i] / alphas_cumsum[i]).nan_to_num(nan=0),
                 sd, time_embed_model, timesteps,
                 tokenizer, text_model, prompt_dataset,
                 device, dtype,
             )
+            gc.collect()
+            torch.cuda.empty_cache()
 
         target = init_sd.pop("target")  # extra key introduced by `update_init_and_target`
         if prompt_dataset is not None:
@@ -136,7 +139,7 @@ def timestep_embedding(timesteps, dim, max_period=10000):
 
 
 def update_init_and_target(
-    average_sd: dict, weight: float,
+    average_sd: dict, weight,
     model_sd, time_embed_model: "TimeEmbed", timesteps: torch.Tensor,
     tokenizer: CLIPTokenizerFast, text_model: TextTransformer, prompt_dataset: "DataLoader",
     device, dtype,

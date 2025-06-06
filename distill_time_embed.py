@@ -45,13 +45,13 @@ def main_cli():
         "--prompt_dataset",
         default=None,
         metavar="PATH",
-        help="Path to a directory containing one text file per prompt (with .txt extension).",
+        help="Path to a directory containing one text file per prompt (each with .txt extension).",
     )
     parser.add_argument(
         "--prompt_dataset_seed",
         default=0,
         type=int,
-        help="Seed used to shuffle the dataset. The dataset is reshuffled for each ",
+        help="Seed used to shuffle the dataset. The dataset is reshuffled in the same order for each text encoder.",
     )
     parser.add_argument(
         "--prompt_batch_size",

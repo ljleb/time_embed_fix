@@ -86,9 +86,6 @@ In ComfyUI, this is one way to use the `Distill Time Embed` node:
 
 ![ComfyUI workflow illustrating how to use Time Embed Fix](/media/comfyui.png)
 
-Using the `Fallback` node allows the method to be used as part of a larger merge workflow.  
-Alternatively, the `Fallback` node can be removed and the `fallback_model` input of the `Merger` node can be used instead.
-
 ## Honorable Mention
 
 Big thanks to Velvet Toroyashi and @vvv01d for reproducing my preliminary results and for going as far as experimenting with some alternatives and optimizing the script.

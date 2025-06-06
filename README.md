@@ -19,7 +19,7 @@ cd ComfyUI/custom_nodes/comfy-mecha/mecha_extensions
 git clone https://github.com/ljleb/time_embed_fix.git
 ```
 
-The node is called `Distill Time Embed`. Make sure the version of comfy-mecha is at least 1.2.36. Completely restart ComfyUI if it is already running.
+The node is called `Distill Time Embed`. Make sure the version of comfy-mecha is at least 1.2.37. Completely restart ComfyUI if it is already running.
 
 ## How to use
 

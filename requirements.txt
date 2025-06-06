@@ -1,3 +1,4 @@
 safetensors
 torch
+transformers
 sd-mecha~=1.0.4

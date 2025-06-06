@@ -24,7 +24,7 @@ def main_cli():
         help="Two or more .safetensors checkpoints that will be used as reference to fix the time_embed keys.",
     )
     parser.add_argument(
-        "--fallback_model",
+        "--model_to_fix",
         metavar="PATH",
         required=True,
         help="The .safetensors checkpoint to fix.",
@@ -34,6 +34,30 @@ def main_cli():
         required=True,
         metavar="PATH",
         help="Where to write the fixed model.",
+    )
+    parser.add_argument(
+        "--alphas",
+        nargs="+",
+        type=float,
+        help="The weights of the input models. Must be either empty or match the number of models.",
+    )
+    parser.add_argument(
+        "--prompt_dataset",
+        default=None,
+        metavar="PATH",
+        help="Path to a directory containing one text file per prompt (with .txt extension).",
+    )
+    parser.add_argument(
+        "--prompt_dataset_seed",
+        default=0,
+        type=int,
+        help="Seed used to shuffle the dataset. The dataset is reshuffled for each ",
+    )
+    parser.add_argument(
+        "--prompt_batch_size",
+        default=4,
+        type=int,
+        help="Batch size used to encode prompts with each text encoder.",
     )
     parser.add_argument(
         "--device",
@@ -58,37 +82,36 @@ def main_cli():
         default=1e-4,
         help="Learning rate (default: 1e-4).",
     )
-    parser.add_argument(
-        "--max_timestep",
-        type=int,
-        default=1000,
-        help="Maximum timestep to optimize (default: 1000)"
-    )
 
     args = parser.parse_args()
     main(
         paths=[str(pathlib.Path(p).absolute()) for p in args.models],
-        fallback_model=args.fallback_model,
+        model_to_fix=args.model_to_fix,
+        alphas=args.alphas if args.alphas else None,
+        prompt_dataset=args.prompt_dataset,
+        prompt_dataset_seed=args.prompt_dataset_seed,
+        prompt_batch_size=args.prompt_batch_size,
         iters=args.iters,
-        max_timestep=args.max_timestep,
         device=args.device,
         dtype=dtype_map[args.dtype],
         out_path=args.out,
     )
 
 
-def main(paths, fallback_model, iters, max_timestep, device, dtype, out_path):
+def main(paths, model_to_fix, alphas, prompt_dataset, prompt_dataset_seed, prompt_batch_size, iters, device, dtype, out_path):
     recipe = distill_time_embed(
         *(sd_mecha.model(path, config=model_config) for path in paths),
+        model_to_fix=sd_mecha.model(model_to_fix, config=model_config),
+        alphas=torch.tensor(alphas, device=device, dtype=dtype),
         iters=iters,
-        max_timestep=max_timestep,
+        prompt_dataset=prompt_dataset,
+        prompt_dataset_shuffle_seed=prompt_dataset_seed,
+        prompt_encoding_batch_size=prompt_batch_size,
     )
     sd_mecha.merge(
         recipe,
-        fallback_model=sd_mecha.model(fallback_model, config=model_config),
         merge_device=device,
         merge_dtype=dtype,
-        threads=0,
         output=out_path,
     )
 
